@@ -20,20 +20,9 @@ const TABS = [
    column, instead of staying pinned to a phone-sized 420px */
 const CONTENT_WIDTH = "clamp(380px, 92vw, 880px)";
 
-/* scattered $ signs in the three rating colors, tiled behind the sign-in
-   screen — its own theme, separate from the rest of the app */
-const DOLLAR_BG = `url("data:image/svg+xml;utf8,${encodeURIComponent(`
-  <svg xmlns='http://www.w3.org/2000/svg' width='150' height='150'>
-    <text x='8' y='45' font-family='Arial, sans-serif' font-size='36' font-weight='800' fill='${C.brightGreen}' opacity='0.5'>$</text>
-    <text x='85' y='105' font-family='Arial, sans-serif' font-size='32' font-weight='800' fill='${C.yellow}' opacity='0.5'>$</text>
-    <text x='35' y='140' font-family='Arial, sans-serif' font-size='28' font-weight='800' fill='${C.red}' opacity='0.5'>$</text>
-    <text x='108' y='30' font-family='Arial, sans-serif' font-size='22' font-weight='800' fill='${C.red}' opacity='0.35'>$</text>
-    <text x='50' y='75' font-family='Arial, sans-serif' font-size='18' font-weight='800' fill='${C.yellow}' opacity='0.3'>$</text>
-  </svg>
-`)}")`;
-
-/* very soft green/yellow/red glow, 30% strength, behind every signed-in
-   page — a nod to the flag without competing with the content */
+/* very soft green/yellow/red glow, 30% strength, behind every page
+   (including sign-in) — a nod to the flag without competing with the
+   content */
 const FLAG_GLOW = `radial-gradient(circle at 12% 15%, ${C.brightGreen}, transparent 38%),
   radial-gradient(circle at 50% 45%, ${C.yellow}, transparent 40%),
   radial-gradient(circle at 88% 82%, ${C.red}, transparent 38%)`;
@@ -62,14 +51,11 @@ export default function App() {
     setAppearance(DEFAULTS);
   };
 
-  const signedOut = user === null;
-
   return (
     <div
       style={{
         minHeight: "100vh",
-        background: signedOut ? `${DOLLAR_BG}, ${C.paper}` : C.paper,
-        backgroundRepeat: signedOut ? "repeat" : undefined,
+        background: C.paper,
         position: "relative",
         display: "flex",
         justifyContent: "center",
@@ -88,20 +74,18 @@ export default function App() {
         @media (prefers-reduced-motion: reduce) { .rateBtn { transition: none; } }
       `}</style>
 
-      {!signedOut && user && (
-        <div
-          aria-hidden="true"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: "none",
-            opacity: 0.3,
-            background: FLAG_GLOW,
-            filter: "blur(70px)",
-          }}
-        />
-      )}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: "none",
+          opacity: 0.3,
+          background: FLAG_GLOW,
+          filter: "blur(70px)",
+        }}
+      />
 
       <div style={{ width: "100%", maxWidth: CONTENT_WIDTH, position: "relative", zIndex: 1 }}>
         <div style={{ textAlign: "center", marginBottom: 22 }}>
